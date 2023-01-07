@@ -15,12 +15,14 @@ const serpmeKahvalti = {isim: "Serpme Kahvaltı", fiyat: 16, kategori:"Kahvaltı
 */
 
 
-function MenuElemaniOlustur(/*Kodlar buraya*/){
-	/*Kodlar buraya*/
+function MenuElemaniOlustur(gıda,fiyat,kategori){
+	const menü = { };
+	menü.isim = gıda ; menü.fiyat = fiyat ; menü.kategori = kategori ;
+	return menü
 }
 
-
-
+MenuElemaniOlustur('Cheeseburger',8,'Burgerler')
+console.log(MenuElemaniOlustur('Cheeseburger',8,'Burgerler'));
 /*  Görev 1b (otomatik test yok): 
 	Fonksiyonu çağırın!
 	Aşağıdakileri uygulayarak MenuElemaniOlustur fonksiyonunuzu test edin:
@@ -30,9 +32,17 @@ function MenuElemaniOlustur(/*Kodlar buraya*/){
 	
 	Örnek: MenuElemaniOlustur("Karışık Pizza",5,"Pizzalar") şunu döndürür: {isim:"Karışık Pizza",fiyat:5,kategori:"Pizzalar"}
 */
-
-
-
+function MenuElemaniOlustur2(gıda,fiyat,kategori){
+const menü ={
+	'isim': gıda,
+	'fiyat': fiyat,
+	'kategori':kategori
+}
+return menü
+}
+console.log(MenuElemaniOlustur2('pizza',10,'pizza'));
+console.log(MenuElemaniOlustur2('çorba',5,'evYemekleri'));
+console.log(MenuElemaniOlustur2('cola',5,'içeçekler'));
 /* Görev 2: 
 	Özel bir öğle yemeği yiyorsun! Öğretmen ve öğrencilere %25, diğer kişilere %10 indirim var. Aşağıdaki burger nesnesine, indirimi fiyatı otomatik olarak hesaplayan bir metot ekleyin.
 	
@@ -50,9 +60,14 @@ const burger = {
 	isim: "Burger", 
 	fiyat: 18, 
 	kategori: "Öğle Yemeği", 
-
+	indirim: function burger(gelenKişi){ 
+		if (gelenKişi === 'öğretmen' || gelenKişi === 'öğrenci' ){
+	return (0.75*this.fiyat)	
+		}
+		else {return (0.90*this.fiyat)}
+	}
 }
-
+console.log(burger.indirim("öğretmen"))
 
 
 ///////////////Değerlendirmeler (MVP)///////////////////
@@ -71,14 +86,18 @@ const degerlendirmeler = [
 	Yukarıdaki degerlendirmeler dizisini(array) kullanarak:
 	1. Sadece Ahmet'in geribildirimini konsolda görüntüleyin - fonksiyona gerek yok
 */
+console.log(degerlendirmeler[5].geribildirim);
 
-
+degerlendirmeler.filter(items => items.isim===["Ahmet"])
+.forEach(item=> console.log(item.geribildirim));
 
 /*  Görev 4 (ototest yok):  
 	Reyna'nın geribildirimi girilmemiş! Aşağıdakileri uygulayın: (fonksiyona gerek yok) 
 	1. Bu geribildirimi Reyna'nın değerlendirmesine ekleyin - "bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım"
 	2. degerlendirmeler dizisini konsolda görüntüleyerek çalışmanızı kontrol edin
 */
+degerlendirmeler[7].geribildirim="bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım";
+
 
 
 
@@ -92,14 +111,21 @@ const degerlendirmeler = [
 	🌟 ÖRNEK: DegerledirmeEkle(degerlendirmeler, 'Hurşut', 2, 'Boktan yemekler!') dizinin sonuna şunu eklemeli: {isim: 'Hurşut', puan: 2, geribildirim: 'Boktan yemekler!'}
 	4. Güncellenmiş diziyi döndürecek
 */
+console.log("----------------------------------------------------------------------------------------")
 
+function DegerledirmeEkle(GelenDizi,g_isim,g_puan,g_geribildirim){
+	let YeniDizi= [...GelenDizi]
+	let yeniObje ={
+		'isim' : g_isim,
+		'puan' : g_puan,
+		'geribildirim': g_geribildirim
+	}
+	YeniDizi.push(yeniObje); return YeniDizi;
 
-function DegerledirmeEkle(/*Kodlar buraya */){
-	/*Kodlar buraya */
-	
 }
-
-
+DegerledirmeEkle(degerlendirmeler,'Hurşut',2,'Boktan yemekler!');
+console.log(DegerledirmeEkle(degerlendirmeler,'Hurşut',2,'Boktan yemekler!'))
+console.log("-----------------------------------------------------------------------------------------")
 
 /*  Görev 6: 
 	Dizideki değerlendirmelerin anahtarına(key,index) bağlı olarak bir değerlendirme döndüren bir fonksiyon yazın
@@ -112,12 +138,11 @@ function DegerledirmeEkle(/*Kodlar buraya */){
 */
 
 
-function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
-	/*Kodlar buraya*/
-
+function AnahtardanDegerlendirmeAl(GelenDizi,istenilenAnahtar) {
+	return (`${GelenDizi[istenilenAnahtar].isim} isimli kişi ${GelenDizi[istenilenAnahtar].puan} puan verdi ve şunları yazdı: ${GelenDizi[istenilenAnahtar].geribildirim}`)
 }
 
-
+console.log(AnahtardanDegerlendirmeAl(degerlendirmeler,4));
 
 /*  Görev 7:  
 	Diziden en son değerlendirmeyi döndüren adı `SonDegerlendirmeyiAl` olan bir fonksiyon yazın 
@@ -132,10 +157,12 @@ function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
 */
 
 
-function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
-	/*Kodlar buraya*/
+function SonDegerlendirmeyiAl(GelenDizi) {
+	let indeks = GelenDizi.length-1;
+	
+	return  `${GelenDizi[indeks].isim} isimli kişi ${GelenDizi[indeks].puan} puan verdi ve şunları yazdı: ${GelenDizi[indeks].geribildirim}`
 } 
-
+console.log(SonDegerlendirmeyiAl(degerlendirmeler));
 
 
 /////////////// BONUS  GÖRVLER////////////////////
@@ -154,10 +181,16 @@ function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
 	]
 */
 
-function PuanaGoreDegerlendirmeAl(/* Kodlar buraya */) {
-    /* Kodlar buraya */
-}
+function PuanaGoreDegerlendirmeAl(GelenDizi,GelenPuan) {
+	let NewArray =[]
 
+	for(let i= 0 ; i< GelenDizi.length;i++)
+  if( Math.floor(GelenDizi[i].puan) === GelenPuan){
+	NewArray.push(GelenDizi[i]);
+  }
+  return NewArray
+}
+console.log(PuanaGoreDegerlendirmeAl(degerlendirmeler,4))
 
 /*  BONUS 2:    
 	UzunDegerlendirmeleriAl fonksiyonuna aşağıdakileri uygulayın:
@@ -166,9 +199,19 @@ function PuanaGoreDegerlendirmeAl(/* Kodlar buraya */) {
 	
 */
 
-function UzunDegerlendirmeleriAl(/* Kodlar buraya */) {
-    /* Kodlar buraya */
-}
+function UzunDegerlendirmeleriAl(GelenDizi,GelenSayı) {
+	let NewArray =[];
+	let kelime = 0 ;
+	for (let i=0; i< GelenDizi.length;i++)
+		if((GelenDizi[i].geribildirim.split(" ").length) > GelenSayı ){
+			NewArray.push(GelenDizi[i])
+			console.log(GelenDizi[i].geribildirim.split(" ").length)
+		}
+		return NewArray
+	}
+console.log(UzunDegerlendirmeleriAl(degerlendirmeler,19))
+    
+
 
 
 /*  BONUS 3:  
@@ -187,12 +230,6 @@ function UzunDegerlendirmeleriAl(/* Kodlar buraya */) {
 	Şu şekilde metotu çağıralım araba1.surus(100)
 	Bu 110 döndürmelidir çünkü başlangıç kilometre sayacını 10 olarak tanımladık ve 100 km arabayı sürdük.
 */
-
-
-function arabaYapici(/* Kodlar buraya */) {
-    /* Kodlar buraya */
-    
-}
 
 
 /*  Buradan aşağıdaki kodları değiştirmeyin lütfen */
